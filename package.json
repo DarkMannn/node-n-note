@@ -8,7 +8,9 @@
         "start": "nodemon",
         "build": "rm -rf ./build && tsc"
     },
-    "dependencies": {},
+    "dependencies": {
+        "inquirer": "^7.0.4"
+    },
     "devDependencies": {
         "@types/node": "^13.1.7"
     },
