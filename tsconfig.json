@@ -2,6 +2,9 @@
     "compilerOptions": {
         "target": "ES6",
         "module": "commonjs",
+        "types": [
+            "node"
+        ],
         "lib": [
             "es6"
         ],

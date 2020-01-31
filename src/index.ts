@@ -1,5 +1,5 @@
-let Program = require('commander');
-let SubPrograms = require('./sub-programs');
+var Program = require('commander');
+var SubPrograms = require('./sub-programs');
 
 Program
     .option('-n, --note', 'a classic note')
