@@ -11,3 +11,6 @@ Program
 if (Program.journal) {
     SubPrograms.journal();
 }
+else if (Program.dailyRetro) {
+    SubPrograms.dailyRetro();
+}

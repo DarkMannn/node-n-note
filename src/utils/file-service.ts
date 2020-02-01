@@ -18,6 +18,20 @@ exports.writeJournal = (newEntry: string): void => {
     Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
 };
 
-exports.writeDailyRetro = () => {};
+interface dailyRetro {
+    doRepeat: string;
+    doNotRepeat: string;
+    lessonLearned: string;
+    gratefulFor: string;
+}
+exports.writeDailyRetro = (newDailyRetro: dailyRetro): void => {
+
+    const data = require(DATA_PATH);
+
+    const currentDate = (new Date()).toLocaleDateString();
+    data.dailyRetro[currentDate] = newDailyRetro;
+
+    Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
+};
 
 exports.writeClassicNote = () => {};
