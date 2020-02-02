@@ -14,3 +14,6 @@ if (Program.journal) {
 else if (Program.dailyRetro) {
     SubPrograms.dailyRetro();
 }
+else {
+    SubPrograms.classicNote();
+}

@@ -49,4 +49,27 @@ export function readDailyRetro(): dailyRetro {
     };
 };
 
-export function writeClassicNote() {};
+interface classicNote {
+    tag: string;
+    note: string;
+}
+export function writeClassicNote(newClassicNote: classicNote): void {
+
+    const data = require(DATA_PATH);
+
+    if (Array.isArray(data.classicNote[newClassicNote.tag])) {
+        data.classicNote[newClassicNote.tag].push(newClassicNote.note);
+    }
+    else {
+        data.classicNote[newClassicNote.tag] = [newClassicNote.note];
+    }
+
+    Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
+};
+
+export function readClassinNoteTags(): string[] {
+
+    const data = require(DATA_PATH);
+    const tags = Object.keys(data.classicNote);
+    return tags;
+}
