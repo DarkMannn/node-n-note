@@ -7,7 +7,7 @@ interface question {
     message: string;
     default: string;
 }
-let questions: question[] = [
+let questionsTemplates: question[] = [
     {
       type: 'input',
       name: 'doNotRepeat',
@@ -37,6 +37,18 @@ let questions: question[] = [
 let dailyRetro: () => void;
 dailyRetro = async () => {
 
+    const currentDailyRetro = FileService.readDailyRetro();
+    const questions = questionsTemplates.map((questionTemplate) => {
+
+        const isAnswerAlreadyEntered = !!currentDailyRetro[questionTemplate.name];
+        if (!isAnswerAlreadyEntered) {
+            return { ...questionTemplate };
+        }
+
+        const existingAnswer = currentDailyRetro[questionTemplate.name];
+        const modifiedProps = { default: existingAnswer };
+        return { ...questionTemplate, ...modifiedProps };
+    });
     const answers = await Inquirer.prompt(questions);
     FileService.writeDailyRetro(answers);
 };

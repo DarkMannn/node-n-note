@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES6",
-        "module": "commonjs",
+        "module": "ES6",
         "types": [
             "node"
         ],
@@ -17,6 +17,6 @@
         "noFallthroughCasesInSwitch": true,
         "resolveJsonModule": true,
         "sourceMap": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
     }
 }

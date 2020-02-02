@@ -34,4 +34,19 @@ exports.writeDailyRetro = (newDailyRetro: dailyRetro): void => {
     Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
 };
 
+    exports.readDailyRetro = (): dailyRetro => {
+
+    const data = require(DATA_PATH);
+
+    const currentDate = (new Date()).toLocaleDateString();
+    const currentDailyRetro = data.dailyRetro[currentDate];
+
+    return currentDailyRetro || {
+        doRepeat: '',
+        doNotRepeat: '',
+        lessonLearned: '',
+        gratefulFor: ''
+    };
+};
+
 exports.writeClassicNote = () => {};
