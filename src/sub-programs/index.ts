@@ -1,4 +1,2 @@
-module.exports = {
-    journal: require('./journal.ts'),
-    dailyRetro: require('./daily-retro.ts')
-};
+export { default as journal } from './journal';
+export { default as dailyRetro } from './daily-retro'

@@ -1,13 +1,13 @@
-var ChildProcess = require('child_process')
-var Fs = require('fs');
-var Uuid = require('uuid');
-var FileService = require('../utils/file-service.ts');
+import * as ChildProcess from 'child_process';
+import * as Fs from 'fs';
+import * as Uuid from 'uuid';
+import * as FileService from '../utils/file-service';
 
 const editor: string = process.env.EDITOR || 'nano';
 const TEMP_DIR: string = '/tmp/nnn' // node-n-note
 
 let journal: () => void;
-journal = () => {
+journal = function () {
 
     Fs.mkdirSync(TEMP_DIR, { recursive: true });
 
@@ -18,4 +18,4 @@ journal = () => {
     FileService.writeJournal(newJournalEntry);
 };
 
-module.exports = journal;
+export default journal;

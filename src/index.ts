@@ -1,5 +1,5 @@
-var Program = require('commander');
-var SubPrograms = require('./sub-programs');
+import * as Program from 'commander';
+import * as SubPrograms from './sub-programs';
 
 Program
     .option('-n, --note', 'a classic note')

@@ -1,9 +1,9 @@
-var Fs = require('fs');
-var Path = require('path');
+import * as Fs from 'fs';
+import * as Path from 'path';
 
 const DATA_PATH = Path.join(__dirname, '../../data/data.json');
 
-exports.writeJournal = (newEntry: string): void => {
+export function writeJournal(newEntry: string): void {
 
     const data = require(DATA_PATH);
 
@@ -24,7 +24,7 @@ interface dailyRetro {
     lessonLearned: string;
     gratefulFor: string;
 }
-exports.writeDailyRetro = (newDailyRetro: dailyRetro): void => {
+export function writeDailyRetro(newDailyRetro: dailyRetro): void {
 
     const data = require(DATA_PATH);
 
@@ -34,7 +34,7 @@ exports.writeDailyRetro = (newDailyRetro: dailyRetro): void => {
     Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
 };
 
-    exports.readDailyRetro = (): dailyRetro => {
+export function readDailyRetro(): dailyRetro {
 
     const data = require(DATA_PATH);
 
@@ -49,4 +49,4 @@ exports.writeDailyRetro = (newDailyRetro: dailyRetro): void => {
     };
 };
 
-exports.writeClassicNote = () => {};
+export function writeClassicNote() {};

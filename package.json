@@ -14,7 +14,9 @@
         "uuid": "^3.4.0"
     },
     "devDependencies": {
-        "@types/node": "^13.1.7"
+        "@types/inquirer": "^6.5.0",
+        "@types/node": "^13.1.7",
+        "@types/uuid": "^3.4.7"
     },
     "keywords": [
         "terminal",

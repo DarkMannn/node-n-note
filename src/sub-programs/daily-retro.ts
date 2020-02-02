@@ -1,9 +1,9 @@
-var Inquirer = require('inquirer');
-var FileService = require('../utils/file-service.ts');
+import * as Inquirer from 'inquirer';
+import * as FileService from '../utils/file-service';
 
 interface question {
-    type: string;
-    name: string;
+    type: 'input';
+    name: 'doRepeat' | 'doNotRepeat' | 'lessonLearned' | 'gratefulFor';
     message: string;
     default: string;
 }
@@ -35,7 +35,7 @@ let questionsTemplates: question[] = [
 ];
 
 let dailyRetro: () => void;
-dailyRetro = async () => {
+dailyRetro = async function() {
 
     const currentDailyRetro = FileService.readDailyRetro();
     const questions = questionsTemplates.map((questionTemplate) => {
@@ -53,4 +53,4 @@ dailyRetro = async () => {
     FileService.writeDailyRetro(answers);
 };
 
-module.exports = dailyRetro;
+export default dailyRetro;
