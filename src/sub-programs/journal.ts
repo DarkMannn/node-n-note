@@ -6,8 +6,14 @@ import * as FileService from '../utils/file-service';
 const editor: string = process.env.EDITOR || 'nano';
 const TEMP_DIR: string = '/tmp/nnn' // node-n-note
 
-let journal: () => void;
-journal = function () {
+type _journalReadType = () => void;
+const _journalRead: _journalReadType = () => {
+
+    console.log('Journal read');
+};
+
+type _journalWriteType = () => void;
+const _journalWrite: _journalWriteType = () => {
 
     Fs.mkdirSync(TEMP_DIR, { recursive: true });
 
@@ -17,5 +23,9 @@ journal = function () {
     const newJournalEntry = Fs.readFileSync(tempFilePath, 'utf8');
     FileService.writeJournal(newJournalEntry);
 };
+
+type journalType = (readOrWrite: 'r' | 'w') => void;
+const journal: journalType =
+    (readOrWrite) => readOrWrite === 'r' ? _journalRead() : _journalWrite();
 
 export default journal;

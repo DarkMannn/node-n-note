@@ -3,7 +3,8 @@ import * as Path from 'path';
 
 const DATA_PATH = Path.join(__dirname, '../../data/data.json');
 
-export function writeJournal(newEntry: string): void {
+type writeJournalType = (newEntry: string) => void;
+export const writeJournal: writeJournalType = (newEntry) => {
 
     const data = require(DATA_PATH);
 
@@ -24,7 +25,8 @@ interface dailyRetro {
     lessonLearned: string;
     gratefulFor: string;
 }
-export function writeDailyRetro(newDailyRetro: dailyRetro): void {
+type writeDailyRetroType = (newDailyRetro: dailyRetro) => void;
+export const writeDailyRetro: writeDailyRetroType = (newDailyRetro) => {
 
     const data = require(DATA_PATH);
 
@@ -34,7 +36,8 @@ export function writeDailyRetro(newDailyRetro: dailyRetro): void {
     Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
 };
 
-export function readDailyRetro(): dailyRetro {
+type readDailyRetroType = () => dailyRetro;
+export const readDailyRetro: readDailyRetroType = () => {
 
     const data = require(DATA_PATH);
 
@@ -53,7 +56,8 @@ interface classicNote {
     tag: string;
     note: string;
 }
-export function writeClassicNote(newClassicNote: classicNote): void {
+type writeClassicNoteType = (newClassicNote: classicNote) => void;
+export const writeClassicNote: writeClassicNoteType = (newClassicNote) => {
 
     const data = require(DATA_PATH);
 
@@ -67,9 +71,10 @@ export function writeClassicNote(newClassicNote: classicNote): void {
     Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
 };
 
-export function readClassinNoteTags(): string[] {
+type readClassinNoteTagsType = () => string[];
+export const readClassinNoteTags: readClassinNoteTagsType = () => {
 
     const data = require(DATA_PATH);
     const tags = Object.keys(data.classicNote);
     return tags;
-}
+};

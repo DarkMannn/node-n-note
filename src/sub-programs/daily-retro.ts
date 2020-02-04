@@ -34,8 +34,14 @@ let questionsTemplates: question[] = [
     }
 ];
 
-let dailyRetro: () => void;
-dailyRetro = async function() {
+type _dailyRetroReadType = () => void;
+const _dailyRetroRead: _dailyRetroReadType = () => {
+
+    console.log('Daily Retro read');
+};
+
+type _dailyRetroWriteType = () => void;
+const _dailyRetroWrite: _dailyRetroWriteType = async () => {
 
     const currentDailyRetro = FileService.readDailyRetro();
     const questions = questionsTemplates.map((questionTemplate) => {
@@ -51,6 +57,10 @@ dailyRetro = async function() {
     });
     const answers = await Inquirer.prompt(questions);
     FileService.writeDailyRetro(answers);
-};
+}
+
+type dailyRetroType = (readOrWrite: 'r' | 'w') => void;
+const dailyRetro: dailyRetroType =
+    (readOrWrite) => readOrWrite === 'r' ? _dailyRetroRead() : _dailyRetroWrite();
 
 export default dailyRetro;

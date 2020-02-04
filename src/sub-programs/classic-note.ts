@@ -23,13 +23,23 @@ _makeQuestions = (existingTags) => ([
     }
 ]);
 
-let classicNote: () => void;
-classicNote = async function () {
+type _classicNoteReadType = () => void;
+const _classicNoteRead: _classicNoteReadType = () => {
+
+    console.log('Classic Note read');
+};
+
+type _classicNoteWriteType = () => void;
+const _classicNoteWrite: _classicNoteWriteType = async () => {
 
     const existingTags = FileService.readClassinNoteTags();
     const questions = _makeQuestions(existingTags);
     const answers = await Inquirer.prompt(questions);
     FileService.writeClassicNote(answers);
 };
+
+type classicNoteType = (readOrWrite: 'r' | 'w') => void;
+const classicNote: classicNoteType =
+    (readOrWrite) => readOrWrite === 'r' ? _classicNoteRead() : _classicNoteWrite();
 
 export default classicNote;
