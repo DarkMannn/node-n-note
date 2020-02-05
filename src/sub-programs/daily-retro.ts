@@ -1,66 +1,72 @@
 import * as Inquirer from 'inquirer';
 import * as FileService from '../utils/file-service';
+import { otherFlags } from '../types';
 
-interface question {
+/**
+ * read sub-branch logic
+ */
+type _dailyRetroReadType = (otherFlags: otherFlags) => void;
+const _dailyRetroRead: _dailyRetroReadType = (otherFlags) => {
+
+    console.log('Daily Retro read');
+    console.log(otherFlags);
+};
+
+/**
+ * write sub-branch logic
+ */
+type _keys = 'doRepeat' | 'doNotRepeat' | 'lessonLearned' | 'gratefulFor';
+type _writeQuestion = {
     type: 'input';
-    name: 'doRepeat' | 'doNotRepeat' | 'lessonLearned' | 'gratefulFor';
+    name: _keys;
     message: string;
     default: string;
 }
-let questionsTemplates: question[] = [
+type _defaults = {
+    [K in _keys]: string
+}
+type _makeWriteQuestionsType = (defaults: _defaults) => _writeQuestion[];
+let _makeWriteQuestions: _makeWriteQuestionsType = (defaults) => ([
     {
-      type: 'input',
-      name: 'doNotRepeat',
-      message: 'What do you need to stop doing?',
-      default: ''
+        type: 'input',
+        name: 'doNotRepeat',
+        message: 'What do you need to stop doing?',
+        default: defaults.doNotRepeat
     },
     {
-      type: 'input',
-      name: 'doRepeat',
-      message: 'What do you need to continue doing?',
-      default: ''
+        type: 'input',
+        name: 'doRepeat',
+        message: 'What do you need to continue doing?',
+        default: defaults.doRepeat
     },
     {
-      type: 'input',
-      name: 'lessonLearned',
-      message: 'What did you learn?',
-      default: ''
+        type: 'input',
+        name: 'lessonLearned',
+        message: 'What did you learn?',
+        default: defaults.lessonLearned
     },
     {
-      type: 'input',
-      name: 'gratefulFor',
-      message: 'What are you grateful for?',
-      default: ''
+        type: 'input',
+        name: 'gratefulFor',
+        message: 'What are you grateful for?',
+        default: defaults.gratefulFor
     }
-];
-
-type _dailyRetroReadType = () => void;
-const _dailyRetroRead: _dailyRetroReadType = () => {
-
-    console.log('Daily Retro read');
-};
+]);
 
 type _dailyRetroWriteType = () => void;
 const _dailyRetroWrite: _dailyRetroWriteType = async () => {
 
     const currentDailyRetro = FileService.readDailyRetro();
-    const questions = questionsTemplates.map((questionTemplate) => {
-
-        const isAnswerAlreadyEntered = !!currentDailyRetro[questionTemplate.name];
-        if (!isAnswerAlreadyEntered) {
-            return { ...questionTemplate };
-        }
-
-        const existingAnswer = currentDailyRetro[questionTemplate.name];
-        const modifiedProps = { default: existingAnswer };
-        return { ...questionTemplate, ...modifiedProps };
-    });
+    const questions = _makeWriteQuestions(currentDailyRetro);
     const answers = await Inquirer.prompt(questions);
     FileService.writeDailyRetro(answers);
 }
 
-type dailyRetroType = (readOrWrite: 'r' | 'w') => void;
+/**
+ * main function
+ */
+type dailyRetroType = (readOrWrite: 'r' | 'w', otherFlags: otherFlags) => void;
 const dailyRetro: dailyRetroType =
-    (readOrWrite) => readOrWrite === 'r' ? _dailyRetroRead() : _dailyRetroWrite();
+    (readOrWrite, otherFlags) => readOrWrite === 'r' ? _dailyRetroRead(otherFlags) : _dailyRetroWrite();
 
 export default dailyRetro;
