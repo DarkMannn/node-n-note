@@ -7,6 +7,9 @@ import { otherFlags } from '../types';
 const editor: string = process.env.EDITOR || 'nano';
 const TEMP_DIR: string = '/tmp/nnn' // node-n-note
 
+/**
+ * read sub-branch logic
+ */
 type _journalReadType = (otherFlags: otherFlags) => void;
 const _journalRead: _journalReadType = (otherFlags) => {
 
@@ -14,6 +17,9 @@ const _journalRead: _journalReadType = (otherFlags) => {
     console.log(otherFlags);
 };
 
+/**
+ * write sub-branch logic
+ */
 type _journalWriteType = () => void;
 const _journalWrite: _journalWriteType = () => {
 
@@ -26,6 +32,9 @@ const _journalWrite: _journalWriteType = () => {
     FileService.writeJournal(newJournalEntry);
 };
 
+/**
+ * main function
+ */
 type journalType = (readOrWrite: 'r' | 'w', otherFlags: otherFlags) => void;
 const journal: journalType =
     (readOrWrite, otherFlags) => readOrWrite === 'r' ? _journalRead(otherFlags) : _journalWrite();

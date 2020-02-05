@@ -2,6 +2,19 @@ import * as Inquirer from 'inquirer';
 import * as FileService from '../utils/file-service';
 import { otherFlags } from '../types';
 
+/**
+ * read sub-branch logic
+ */
+type _classicNoteReadType = (otherFlags: otherFlags) => void;
+const _classicNoteRead: _classicNoteReadType = (otherFlags) => {
+
+    console.log('Classic Note read');
+    console.log(otherFlags);
+};
+
+/**
+ * write sub-branch logic
+ */
 type question = {
     type: 'input';
     name: 'tag' | 'note';
@@ -24,13 +37,6 @@ const _makeQuestions: _makeQuestionsType = (existingTags) => ([
     }
 ]);
 
-type _classicNoteReadType = (otherFlags: otherFlags) => void;
-const _classicNoteRead: _classicNoteReadType = (otherFlags) => {
-
-    console.log('Classic Note read');
-    console.log(otherFlags);
-};
-
 type _classicNoteWriteType = () => void;
 const _classicNoteWrite: _classicNoteWriteType = async () => {
 
@@ -40,6 +46,9 @@ const _classicNoteWrite: _classicNoteWriteType = async () => {
     FileService.writeClassicNote(answers);
 };
 
+/**
+ * main function
+ */
 type classicNoteType = (readOrWrite: 'r' | 'w', otherFlags: otherFlags) => void;
 const classicNote: classicNoteType =
     (readOrWrite, otherFlags) => readOrWrite === 'r' ? _classicNoteRead(otherFlags) : _classicNoteWrite();
