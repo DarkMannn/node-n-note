@@ -9,11 +9,12 @@ export const writeJournal: writeJournalType = (newEntry) => {
     const data = require(DATA_PATH);
 
     const currentDate = (new Date()).toLocaleDateString();
-    if (Array.isArray(data.journal[currentDate])) {
-        data.journal[currentDate].push(newEntry);
+    const lastIndex = data.journal.length - 1;
+    if (data.journal.length && Array.isArray(data.journal[lastIndex][currentDate])) {
+        data.journal[lastIndex][currentDate].push(newEntry);
     }
     else {
-        data.journal[currentDate] = [newEntry];
+        data.journal.push({ [currentDate]: [newEntry] });
     }
 
     Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
@@ -31,7 +32,13 @@ export const writeDailyRetro: writeDailyRetroType = (newDailyRetro) => {
     const data = require(DATA_PATH);
 
     const currentDate = (new Date()).toLocaleDateString();
-    data.dailyRetro[currentDate] = newDailyRetro;
+    const lastIndex = data.dailyRetro.length - 1;
+    if (data.dailyRetro.length && data.dailyRetro[lastIndex][currentDate]) {
+        data.dailyRetro[lastIndex][currentDate] = newDailyRetro;
+    }
+    else {
+        data.dailyRetro.push({ [currentDate]: newDailyRetro });
+    }
 
     Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
 };
@@ -42,7 +49,8 @@ export const readDailyRetro: readDailyRetroType = () => {
     const data = require(DATA_PATH);
 
     const currentDate = (new Date()).toLocaleDateString();
-    const currentDailyRetro = data.dailyRetro[currentDate];
+    const lastIndex = data.dailyRetro.length - 1;
+    const currentDailyRetro = data.dailyRetro.length && data.dailyRetro[lastIndex][currentDate];
 
     return currentDailyRetro || {
         doRepeat: '',
