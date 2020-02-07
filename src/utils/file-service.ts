@@ -3,6 +3,13 @@ import * as Path from 'path';
 
 const DATA_PATH = Path.join(__dirname, '../../data/data.json');
 
+/**
+ * Journal
+ */
+type journal = {
+    [key: string]: string[]
+};
+
 type writeJournalType = (newEntry: string) => void;
 export const writeJournal: writeJournalType = (newEntry) => {
 
@@ -20,6 +27,71 @@ export const writeJournal: writeJournalType = (newEntry) => {
     Fs.writeFileSync(DATA_PATH, JSON.stringify(data), 'utf8');
 };
 
+type _mapSingleJournalType = (journal: journal) => string[];
+const _mapSingleJournal: _mapSingleJournalType = (journalsOnSingleDate) => {
+
+    const [[key, journals]] = Object.entries(journalsOnSingleDate);
+    return journals.map((journal) => `${key}: \n${journal}`);
+};
+
+type readJournalLastNType = (n: number) => string[];
+export const readJournalLastN: readJournalLastNType = (n) => {
+
+    const data = require(DATA_PATH);
+    const journals: journal[] = data.journal;
+
+    const lastN = journals.slice(-n);
+    return lastN.length ? lastN.flatMap(_mapSingleJournal) : ['Not Found'];
+};
+
+type readJournalOnDateType = (date: string) => string[];
+export const readJournalOnDate: readJournalOnDateType = (date) => {
+
+    const data = require(DATA_PATH);
+    const journals: journal[] = data.journal;
+
+    const journalsOnDate = journals.find((journal: journal) => !!journal[date]);
+    return journalsOnDate ? _mapSingleJournal(journalsOnDate) : ['Not Found'];
+};
+
+type readJournalFromToType = (from: string, to?: string) => string[];
+export const readJournalFromTo: readJournalFromToType = (from, to) => {
+
+    const data = require(DATA_PATH);
+    const journals: journal[] = data.journal;
+
+    let fromIndex: number;
+    if (isNaN((new Date(from)).getTime())) {
+        return ['Not Found'];
+    }
+    else {
+        const fromIndexTemp = journals.findIndex((journal: journal) => !!journal[from]);
+        fromIndex = fromIndexTemp === -1
+            ? journals.findIndex((journal: journal) => (new Date(Object.keys(journal)[0]).getTime()) > (new Date(from)).getTime())
+            : fromIndexTemp;
+    }
+
+    let toIndex: number;
+    if (!to || isNaN((new Date(to)).getTime())) {
+        toIndex = journals.length;
+    }
+    else if (from === to ) {
+        toIndex = fromIndex + 1;
+    }
+    else {
+        const toIndexTemp = journals.findIndex((journal: journal) => !!journal[to]);
+        toIndex = toIndexTemp === -1
+            ? journals.findIndex((journal: journal) => (new Date(Object.keys(journal)[0]).getTime()) > (new Date(to)).getTime())
+            : toIndexTemp + 1;
+    }
+
+    const journalsFromTo = journals.slice(fromIndex, toIndex);
+    return journalsFromTo.length ? journalsFromTo.flatMap(_mapSingleJournal) : ['Not Found'];
+};
+
+/**
+ * Daily Retro
+ */
 interface dailyRetro {
     doRepeat: string;
     doNotRepeat: string;
@@ -60,6 +132,9 @@ export const readDailyRetro: readDailyRetroType = () => {
     };
 };
 
+/**
+ * Classic Note
+ */
 interface classicNote {
     tag: string;
     note: string;

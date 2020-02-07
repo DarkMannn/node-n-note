@@ -13,8 +13,25 @@ const TEMP_DIR: string = '/tmp/nnn' // node-n-note
 type _journalReadType = (otherFlags: otherFlags) => void;
 const _journalRead: _journalReadType = (otherFlags) => {
 
-    console.log('Journal read');
-    console.log(otherFlags);
+    let result: string[];
+    if (otherFlags.list) {
+        const n = parseInt(otherFlags.list);
+        result = FileService.readJournalLastN(n);
+    }
+    else if (otherFlags.on) {
+        const date = otherFlags.on;
+        result = FileService.readJournalOnDate(date);
+    }
+    else if (otherFlags.from) {
+        const from = otherFlags.from;
+        const to = otherFlags.to;
+        result = FileService.readJournalFromTo(from, to);
+    }
+    else {
+        result = FileService.readJournalLastN(10);
+    }
+
+    console.log(result);
 };
 
 /**
