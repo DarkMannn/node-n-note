@@ -1,7 +1,7 @@
 import * as Fs from 'fs';
 import { DATA_PATH } from './internals';
 
-interface classicNote {
+type classicNote = {
     tag: string;
     note: string;
 }

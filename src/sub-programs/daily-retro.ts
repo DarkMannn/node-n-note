@@ -5,18 +5,20 @@ import { otherFlags } from '../types';
 /**
  * read sub-branch logic
  */
+
+type dailyRetroNested = FileService.dailyRetro.dailyRetroNested;
+
 type _dailyRetroReadType = (otherFlags: otherFlags) => void;
 const _dailyRetroRead: _dailyRetroReadType = (otherFlags) => {
 
-    console.log(otherFlags);
-    // let result: string[];
-    // if (otherFlags.list) {
-    //     const n = parseInt(otherFlags.list);
-    //     result = FileService.readJournalLastN(n);
-    // }
-    // else if (otherFlags.type) {
-    //     result = FileService.readJournalFromTo(otherFlags.type);
-    // }
+    let result: dailyRetroNested[] | string[];
+    if (otherFlags.list) {
+        const n = parseInt(otherFlags.list);
+        result = FileService.dailyRetro.readLastN(n);
+    }
+    else if (otherFlags.type) {
+        result = FileService.dailyRetro.readByType(otherFlags.type);
+    }
     // else if (otherFlags.on) {
     //     const date = otherFlags.on;
     //     result = FileService.readJournalOnDate(date);
@@ -26,17 +28,17 @@ const _dailyRetroRead: _dailyRetroReadType = (otherFlags) => {
     //     const to = otherFlags.to;
     //     result = FileService.readJournalFromTo(from, to);
     // }
-    // else {
-    //     result = FileService.readJournalLastN(10);
-    // }
+    else {
+        result = FileService.dailyRetro.readLastN(10);
+    }
 
-    // console.log(result);
+    console.log(result);
 };
 
 /**
  * write sub-branch logic
  */
-type _keys = 'doRepeat' | 'doNotRepeat' | 'lessonLearned' | 'gratefulFor';
+type _keys = FileService.dailyRetro.dailyRetroKeys;
 type _writeQuestion = {
     type: 'input';
     name: _keys;
@@ -77,7 +79,7 @@ let _makeWriteQuestions: _makeWriteQuestionsType = (defaults) => ([
 type _dailyRetroWriteType = () => void;
 const _dailyRetroWrite: _dailyRetroWriteType = async () => {
 
-    const currentDailyRetro = FileService.dailyRetro.read();
+    const currentDailyRetro = FileService.dailyRetro.readTodayEntry();
     const questions = _makeWriteQuestions(currentDailyRetro);
     const answers = await Inquirer.prompt(questions);
     FileService.dailyRetro.write(answers);
