@@ -1,5 +1,5 @@
 import * as Inquirer from 'inquirer';
-import * as FileService from '../utils/file-service';
+import * as FileService from '../file-service';
 import { otherFlags } from '../types';
 
 /**
@@ -8,8 +8,29 @@ import { otherFlags } from '../types';
 type _dailyRetroReadType = (otherFlags: otherFlags) => void;
 const _dailyRetroRead: _dailyRetroReadType = (otherFlags) => {
 
-    console.log('Daily Retro read');
     console.log(otherFlags);
+    // let result: string[];
+    // if (otherFlags.list) {
+    //     const n = parseInt(otherFlags.list);
+    //     result = FileService.readJournalLastN(n);
+    // }
+    // else if (otherFlags.type) {
+    //     result = FileService.readJournalFromTo(otherFlags.type);
+    // }
+    // else if (otherFlags.on) {
+    //     const date = otherFlags.on;
+    //     result = FileService.readJournalOnDate(date);
+    // }
+    // else if (otherFlags.from) {
+    //     const from = otherFlags.from;
+    //     const to = otherFlags.to;
+    //     result = FileService.readJournalFromTo(from, to);
+    // }
+    // else {
+    //     result = FileService.readJournalLastN(10);
+    // }
+
+    // console.log(result);
 };
 
 /**
@@ -56,10 +77,10 @@ let _makeWriteQuestions: _makeWriteQuestionsType = (defaults) => ([
 type _dailyRetroWriteType = () => void;
 const _dailyRetroWrite: _dailyRetroWriteType = async () => {
 
-    const currentDailyRetro = FileService.readDailyRetro();
+    const currentDailyRetro = FileService.dailyRetro.read();
     const questions = _makeWriteQuestions(currentDailyRetro);
     const answers = await Inquirer.prompt(questions);
-    FileService.writeDailyRetro(answers);
+    FileService.dailyRetro.write(answers);
 }
 
 /**

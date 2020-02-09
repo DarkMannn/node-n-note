@@ -1,5 +1,5 @@
 import * as Inquirer from 'inquirer';
-import * as FileService from '../utils/file-service';
+import * as FileService from '../file-service';
 import { otherFlags } from '../types';
 
 /**
@@ -40,10 +40,10 @@ const _makeQuestions: _makeQuestionsType = (existingTags) => ([
 type _classicNoteWriteType = () => void;
 const _classicNoteWrite: _classicNoteWriteType = async () => {
 
-    const existingTags = FileService.readClassinNoteTags();
+    const existingTags = FileService.classicNote.readTags();
     const questions = _makeQuestions(existingTags);
     const answers = await Inquirer.prompt(questions);
-    FileService.writeClassicNote(answers);
+    FileService.classicNote.write(answers);
 };
 
 /**
