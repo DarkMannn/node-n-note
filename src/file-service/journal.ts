@@ -1,5 +1,5 @@
 import * as Fs from 'fs';
-import { DATA_PATH } from './internals';
+import { DATA_PATH, isObjectsKeyBiggerDateThan } from './internals';
 
 type journal = {
     [key: string]: string[]
@@ -31,7 +31,7 @@ export const readOnDate: readOnDateType = (date) => {
     const data = require(DATA_PATH);
     const journals: journal[] = data.journal;
 
-    const journalsOnDate = journals.find((journal: journal) => !!journal[date]);
+    const journalsOnDate = journals.find((journal) => !!journal[date]);
     return journalsOnDate ? _mapSingleJournal(journalsOnDate) : ['Not Found'];
 };
 
@@ -46,9 +46,9 @@ export const readFromTo: readFromToType = (from, to) => {
         return ['Not Found'];
     }
     else {
-        const fromIndexTemp = journals.findIndex((journal: journal) => !!journal[from]);
+        const fromIndexTemp = journals.findIndex((journal) => !!journal[from]);
         fromIndex = fromIndexTemp === -1
-            ? journals.findIndex((journal: journal) => (new Date(Object.keys(journal)[0]).getTime()) > (new Date(from)).getTime())
+            ? journals.findIndex(isObjectsKeyBiggerDateThan(from))
             : fromIndexTemp;
     }
 
@@ -60,9 +60,9 @@ export const readFromTo: readFromToType = (from, to) => {
         toIndex = fromIndex + 1;
     }
     else {
-        const toIndexTemp = journals.findIndex((journal: journal) => !!journal[to]);
+        const toIndexTemp = journals.findIndex((journal) => !!journal[to]);
         toIndex = toIndexTemp === -1
-            ? journals.findIndex((journal: journal) => (new Date(Object.keys(journal)[0]).getTime()) > (new Date(to)).getTime())
+            ? journals.findIndex(isObjectsKeyBiggerDateThan(to))
             : toIndexTemp + 1;
     }
 

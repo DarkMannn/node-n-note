@@ -17,17 +17,18 @@ const _dailyRetroRead: _dailyRetroReadType = (otherFlags) => {
         result = FileService.dailyRetro.readLastN(n);
     }
     else if (otherFlags.type) {
-        result = FileService.dailyRetro.readByType(otherFlags.type);
+        const type = otherFlags.type
+        result = FileService.dailyRetro.readByType(type);
     }
-    // else if (otherFlags.on) {
-    //     const date = otherFlags.on;
-    //     result = FileService.readJournalOnDate(date);
-    // }
-    // else if (otherFlags.from) {
-    //     const from = otherFlags.from;
-    //     const to = otherFlags.to;
-    //     result = FileService.readJournalFromTo(from, to);
-    // }
+    else if (otherFlags.on) {
+        const date = otherFlags.on;
+        result = FileService.dailyRetro.readOnDate(date);
+    }
+    else if (otherFlags.from) {
+        const from = otherFlags.from;
+        const to = otherFlags.to;
+        result = FileService.dailyRetro.readFromTo(from, to);
+    }
     else {
         result = FileService.dailyRetro.readLastN(10);
     }

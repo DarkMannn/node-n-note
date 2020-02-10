@@ -1,5 +1,5 @@
 import * as Fs from 'fs';
-import { DATA_PATH } from './internals';
+import { DATA_PATH, isObjectsKeyBiggerDateThan } from './internals';
 
 type dailyRetro = {
     doRepeat: string;
@@ -70,6 +70,52 @@ export const readByType: readByTypeType = (type) => {
     const dailyRetros: dailyRetroNested[] = data.dailyRetro;
     return dailyRetros.map((dailyRetro) => Object.values(dailyRetro)[0][type]);
 };
+
+type readOnDateType = (date: string) => dailyRetroNested[];
+export const readOnDate: readOnDateType = (date) => {
+
+    const data = require(DATA_PATH);
+    const dailyRetros: dailyRetroNested[] = data.dailyRetro;
+
+    const dailyRetroOnDate = dailyRetros.find((dailyRetro) => !!dailyRetro[date]);
+    return dailyRetroOnDate ? [dailyRetroOnDate] : [EMPTY_TEMPLATE_NESTED];
+};
+
+type readFromToType = (from: string, to?: string) => dailyRetroNested[];
+export const readFromTo: readFromToType = (from, to) => {
+
+    const data = require(DATA_PATH);
+    const dailyRetros: dailyRetroNested[] = data.dailyRetro;
+
+    let fromIndex: number;
+    if (isNaN((new Date(from)).getTime())) {
+        return [EMPTY_TEMPLATE_NESTED];
+    }
+    else {
+        const fromIndexTemp = dailyRetros.findIndex((dailyRetro) => !!dailyRetro[from]);
+        fromIndex = fromIndexTemp === -1
+            ? dailyRetros.findIndex(isObjectsKeyBiggerDateThan(from))
+            : fromIndexTemp;
+    }
+
+    let toIndex: number;
+    if (!to || isNaN((new Date(to)).getTime())) {
+        toIndex = dailyRetros.length;
+    }
+    else if (from === to ) {
+        toIndex = fromIndex + 1;
+    }
+    else {
+        const toIndexTemp = dailyRetros.findIndex((dailyRetro) => !!dailyRetro[to]);
+        toIndex = toIndexTemp === -1
+            ? dailyRetros.findIndex(isObjectsKeyBiggerDateThan(to))
+            : toIndexTemp + 1;
+    }
+
+    const dailyRetrosFromTo = dailyRetros.slice(fromIndex, toIndex);
+    return dailyRetrosFromTo.length ? dailyRetrosFromTo : [EMPTY_TEMPLATE_NESTED];
+};
+
 
 /**
  * write methods
