@@ -1,10 +1,13 @@
 import * as Fs from 'fs';
 import { DATA_PATH } from './internals';
 
-type classicNote = {
+type classicNotePrompt = {
     tag: string;
     note: string;
 }
+export type classicNote = {
+    [key: string]: string[]
+};
 
 /**
  * read methods
@@ -17,10 +20,26 @@ export const readTags: readTagsType = () => {
     return tags;
 };
 
+type readByTagType = (tag: string) => string[];
+export const readByTag: readByTagType = (tag) => {
+
+    const data = require(DATA_PATH);
+    const classicNotes: classicNote = data.classicNote;
+    return classicNotes[tag] || ['Not Found'];
+};
+
+type readAllType = () => classicNote;
+export const readAll: readAllType = () => {
+
+    const data = require(DATA_PATH);
+    const classicNotes: classicNote = data.classicNote;
+    return classicNotes;
+};
+
 /**
  * write methods
  */
-type writeType = (newClassicNote: classicNote) => void;
+type writeType = (newClassicNote: classicNotePrompt) => void;
 export const write: writeType = (newClassicNote) => {
 
     const data = require(DATA_PATH);

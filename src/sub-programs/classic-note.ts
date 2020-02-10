@@ -5,11 +5,24 @@ import { otherFlags } from '../types';
 /**
  * read sub-branch logic
  */
+type classicNote = FileService.classicNote.classicNote;
+
 type _classicNoteReadType = (otherFlags: otherFlags) => void;
 const _classicNoteRead: _classicNoteReadType = (otherFlags) => {
 
-    console.log('Classic Note read');
-    console.log(otherFlags);
+    let result: string[] | classicNote;
+    if (otherFlags.list) {
+        result = FileService.classicNote.readTags();
+    }
+    else if (otherFlags.tag) {
+        const tag = otherFlags.tag
+        result = FileService.classicNote.readByTag(tag);
+    }
+    else {
+        result = FileService.classicNote.readAll();
+    }
+
+    console.log(result);
 };
 
 /**
