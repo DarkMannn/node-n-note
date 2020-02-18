@@ -1,5 +1,5 @@
 import * as Fs from 'fs';
-import { DATA_PATH, isObjectsKeyBiggerDateThan } from './internals';
+import { DATA_PATH, isObjectsKeyBiggerDateThan } from './utils';
 
 type dailyRetro = {
     doRepeat: string;

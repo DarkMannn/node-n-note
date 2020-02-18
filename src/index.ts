@@ -1,5 +1,9 @@
+import * as DotEnv from 'dotenv';
+DotEnv.config();
+
 import * as Program from 'commander';
 import * as SubPrograms from './sub-programs';
+import * as FileService from './file-service'
 import { Id, otherFlags } from './types';
 
 type mainFlags = {
@@ -21,6 +25,11 @@ const executeProgram: executeProgramType = (readOrWrite, { journal, dailyRetro, 
         SubPrograms.classicNote(readOrWrite, otherFlags);
     }
 };
+
+/**
+ * setup folder structure if needed
+ */
+FileService.utils.defineFolderAndFilesIfFirstTime();
 
 /**
  * define main program help

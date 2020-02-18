@@ -10,6 +10,8 @@
     },
     "dependencies": {
         "commander": "^4.1.0",
+        "dotenv": "^8.2.0",
+        "googleapis": "^47.0.0",
         "inquirer": "^7.0.4",
         "uuid": "^3.4.0"
     },

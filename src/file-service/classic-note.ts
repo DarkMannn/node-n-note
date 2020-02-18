@@ -1,5 +1,5 @@
 import * as Fs from 'fs';
-import { DATA_PATH } from './internals';
+import { DATA_PATH } from './utils';
 
 type classicNotePrompt = {
     tag: string;
