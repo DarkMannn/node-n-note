@@ -1,9 +1,9 @@
 import * as DotEnv from 'dotenv';
-DotEnv.config();
+import * as FileService from './file-service'
+DotEnv.config({ path: `${FileService.utils.NNN_DIR}/.env` });
 
 import * as Program from 'commander';
 import * as SubPrograms from './sub-programs';
-import * as FileService from './file-service'
 import { Id, otherFlags } from './types';
 
 type mainFlags = {
