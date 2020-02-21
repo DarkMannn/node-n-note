@@ -3,6 +3,7 @@ import * as FileService from './file-service'
 DotEnv.config({ path: `${FileService.utils.NNN_DIR}/.env` });
 
 import * as Program from 'commander';
+import * as GDriveService from './gdrive-service';
 import * as SubPrograms from './sub-programs';
 import { Id, otherFlags } from './types';
 
@@ -13,16 +14,21 @@ type mainFlags = {
 };
 type flags = Id<mainFlags & otherFlags>;
 type executeProgramType = (readOrWrite: 'r' | 'w', flags: flags) => void;
-const executeProgram: executeProgramType = (readOrWrite, { journal, dailyRetro, note, ...otherFlags }) => {
+const executeProgram: executeProgramType = async (readOrWrite, { journal, dailyRetro, note, ...otherFlags }) => {
 
     if (journal) {
-        SubPrograms.journal(readOrWrite, otherFlags);
+        await SubPrograms.journal(readOrWrite, otherFlags);
     }
     else if (dailyRetro) {
-        SubPrograms.dailyRetro(readOrWrite, otherFlags);
+        await SubPrograms.dailyRetro(readOrWrite, otherFlags);
     }
     else if (note) {
-        SubPrograms.classicNote(readOrWrite, otherFlags);
+        await SubPrograms.classicNote(readOrWrite, otherFlags);
+    }
+
+    if (readOrWrite === 'w') {
+        console.log('Creating a backup on GDrive.');
+        await GDriveService.makeDataBackup();
     }
 };
 
@@ -48,7 +54,6 @@ Program
             $ nnn read -n -a shopping    (read classin note entries with the 'shopping' tag)
         `)
     });
-;
 
 /**
  * define read subprogram
@@ -71,8 +76,7 @@ Program
     .action((cmdObj) => {
 
         executeProgram('r', cmdObj);
-    })
-    ;
+    });
 
 /**
  * define write subprogram
@@ -86,8 +90,7 @@ Program
     .action((cmdObj) => {
 
         executeProgram('w', cmdObj);
-    })
-    ;
+    });
 
 /**
  * parse the executed command

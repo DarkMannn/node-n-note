@@ -4,7 +4,8 @@ import * as Os from 'os';
 import { AssertionError } from 'assert';
 
 export const NNN_DIR = Path.join(Os.homedir(), '/.nnn');
-export const DATA_PATH = Path.join(NNN_DIR, '/data.json');
+export const DATA_FILENAME = 'data.json';
+export const DATA_PATH = Path.join(NNN_DIR, DATA_FILENAME);
 
 type _obj = { [key: string]: any };
 type isObjectsKeyBiggerDateThan = (date: string) => (obj: _obj) => boolean;
@@ -58,3 +59,6 @@ export const writeToAppDir: writeToAppDirType = (filename, data) => {
     const filepath = Path.join(NNN_DIR, filename);
     Fs.writeFileSync(filepath, JSON.stringify(data));
 };
+
+type getDataAsReadableType = () => Fs.ReadStream;
+export const getDataAsReadable: getDataAsReadableType = () => Fs.createReadStream(DATA_PATH);
