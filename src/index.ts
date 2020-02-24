@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as DotEnv from 'dotenv';
 import * as FileService from './file-service'
 DotEnv.config({ path: `${FileService.utils.NNN_DIR}/.env` });

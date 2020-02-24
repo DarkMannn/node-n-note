@@ -3,9 +3,12 @@
     "version": "1.0.0",
     "description": "Note taking app for terminal written in Node.js",
     "main": "./src/index.ts",
+    "bin": {
+        "nnn": "./build/index.js"
+    },
     "scripts": {
         "test": "echo 'Not Implemented'",
-        "start": "nodemon",
+        "start": "ts-node ./src/index.ts",
         "build": "rm -rf ./build && tsc"
     },
     "dependencies": {
@@ -22,10 +25,12 @@
     },
     "keywords": [
         "terminal",
+        "journal",
         "notes",
         "note",
-        "journal"
+        "node"
     ],
+    "preferGlobal": true,
     "author": "DarkMannn",
     "license": "MIT"
 }
