@@ -2,7 +2,10 @@
 
 import * as DotEnv from 'dotenv';
 import * as FileService from './file-service'
-DotEnv.config({ path: `${FileService.utils.NNN_DIR}/.env` });
+const result = DotEnv.config({ path: `${FileService.utils.NNN_DIR}/.env` });
+if (result.error) {
+    throw Error(`Error in reading the .env file: ${result.error.message}`);
+}
 
 import * as Program from 'commander';
 import * as GDriveService from './gdrive-service';
