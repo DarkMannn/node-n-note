@@ -36,7 +36,7 @@ export const readTodayEntry: readTodayEntryType = () => {
 
     const data = require(DATA_PATH);
 
-    const currentDate = (new Date()).toLocaleDateString();
+    const currentDate = (new Date()).toLocaleDateString('en-GB');
     const lastIndex = data.dailyRetro.length - 1;
     const currentDailyRetro = data.dailyRetro.length && data.dailyRetro[lastIndex][currentDate];
 
@@ -68,7 +68,7 @@ export const readByType: readByTypeType = (type) => {
 
     const data = require(DATA_PATH);
     const dailyRetros: dailyRetroNested[] = data.dailyRetro;
-    return dailyRetros.map((dailyRetro) => Object.values(dailyRetro)[0][type]);
+    return dailyRetros.map((dailyRetro) => Object.values(dailyRetro)[0][type]).filter(Boolean);
 };
 
 type readOnDateType = (date: string) => dailyRetroNested[];
@@ -125,7 +125,7 @@ export const write: writeType = (newDailyRetro) => {
 
     const data = require(DATA_PATH);
 
-    const currentDate = (new Date()).toLocaleDateString();
+    const currentDate = (new Date()).toLocaleDateString('en-GB');
     const lastIndex = data.dailyRetro.length - 1;
     if (data.dailyRetro.length && data.dailyRetro[lastIndex][currentDate]) {
         data.dailyRetro[lastIndex][currentDate] = newDailyRetro;

@@ -78,7 +78,7 @@ export const write: writeType = (newEntry) => {
 
     const data = require(DATA_PATH);
 
-    const currentDate = (new Date()).toLocaleDateString();
+    const currentDate = (new Date()).toLocaleDateString('en-GB');
     const lastIndex = data.journal.length - 1;
     if (data.journal.length && Array.isArray(data.journal[lastIndex][currentDate])) {
         data.journal[lastIndex][currentDate].push(newEntry);
