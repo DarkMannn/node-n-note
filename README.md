@@ -15,8 +15,8 @@ This will print out the following:
       -h, --help       output usage information
 
     Commands:
-      read [options]   Read a journal entry, daily retrospection notes or classic notes based on arguments and filtering
-                       One of -j/-d/-n flags is mandatory
+      read [options]   Read a journal entry, daily retrospection notes or classic notes based on
+                       arguments and filtering. One of -j/-d/-n flags is mandatory
       write [options]  Write a journal entry, daily retrospection notes or a basic note
 
                 Examples:
